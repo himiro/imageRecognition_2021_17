@@ -1,0 +1,8 @@
+CorrelationId: 0f7eceb1-dbc1-473b-b4b7-7ae9ae60becd
+UTC DateTime: 09/03/2020 13:25:39
+
+The following files/folders have not been downloaded
+1. chest_Xray/test/NORMAL
+2. chest_Xray/test/PNEUMONIA
+3. chest_Xray/train/NORMAL
+4. chest_Xray/train/PNEUMONIA
