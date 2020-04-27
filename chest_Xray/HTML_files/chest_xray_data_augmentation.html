@@ -13161,7 +13161,7 @@ drwxr-xr-x 4 mathou mathou  4096 mars  16 14:37 val
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[90]:</div>
+<div class="prompt input_prompt">In&nbsp;[100]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">train_X</span> <span class="o">=</span> <span class="p">[]</span>
@@ -13187,8 +13187,6 @@ drwxr-xr-x 4 mathou mathou  4096 mars  16 14:37 val
                 <span class="c1"># rotated_image = rotate(img, angle=45)</span>
                 <span class="n">img_data</span> <span class="o">=</span> <span class="p">[</span><span class="n">img</span><span class="p">,</span> <span class="n">flipped_image</span><span class="p">]</span>
                 <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">img_data</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span><span class="mi">1</span><span class="p">:</span>
-                        <span class="n">image</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dstack</span><span class="p">([</span><span class="n">image</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">image</span><span class="p">])</span>
                     <span class="n">train_X</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
                     <span class="n">train_Y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">is_pneumonia</span><span class="p">)</span>
             <span class="k">except</span><span class="p">:</span>
@@ -13228,7 +13226,7 @@ drwxr-xr-x 4 mathou mathou  4096 mars  16 14:37 val
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[91]:</div>
+<div class="prompt input_prompt">In&nbsp;[101]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">val_X</span> <span class="o">=</span> <span class="p">[]</span>
@@ -13281,7 +13279,7 @@ drwxr-xr-x 4 mathou mathou  4096 mars  16 14:37 val
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[92]:</div>
+<div class="prompt input_prompt">In&nbsp;[102]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_X</span> <span class="o">=</span> <span class="p">[]</span>
@@ -13322,7 +13320,7 @@ drwxr-xr-x 4 mathou mathou  4096 mars  16 14:37 val
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[93]:</div>
+<div class="prompt input_prompt">In&nbsp;[103]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># PLOT POUMONS</span>
@@ -13351,13 +13349,13 @@ drwxr-xr-x 4 mathou mathou  4096 mars  16 14:37 val
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[93]:</div>
+    <div class="prompt output_prompt">Out[103]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7fb271df6150&gt;</pre>
+<pre>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7fb23c168c90&gt;</pre>
 </div>
 
 </div>
@@ -13420,7 +13418,7 @@ drwxr-xr-x 4 mathou mathou  4096 mars  16 14:37 val
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[94]:</div>
+<div class="prompt input_prompt">In&nbsp;[104]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">random_state</span> <span class="o">=</span> <span class="mi">30</span><span class="p">,</span> <span class="n">n_estimators</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">max_depth</span> <span class="o">=</span> <span class="mi">20</span><span class="p">)</span>
@@ -13461,7 +13459,7 @@ drwxr-xr-x 4 mathou mathou  4096 mars  16 14:37 val
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[95]:</div>
+<div class="prompt input_prompt">In&nbsp;[105]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">scores_preds</span> <span class="o">=</span> <span class="n">cross_val_predict</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">test_X</span><span class="p">,</span> <span class="n">test_Y</span><span class="p">)</span>
@@ -13501,7 +13499,7 @@ drwxr-xr-x 4 mathou mathou  4096 mars  16 14:37 val
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[96]:</div>
+<div class="prompt input_prompt">In&nbsp;[106]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">accuracy</span> <span class="o">=</span> <span class="n">roc_auc_score</span><span class="p">(</span><span class="n">test_Y</span><span class="p">,</span> <span class="n">scores_preds</span><span class="p">)</span>
@@ -13540,7 +13538,7 @@ drwxr-xr-x 4 mathou mathou  4096 mars  16 14:37 val
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[97]:</div>
+<div class="prompt input_prompt">In&nbsp;[107]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">false_positive</span><span class="p">,</span> <span class="n">true_positive</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">roc_curve</span><span class="p">(</span><span class="n">test_Y</span><span class="p">,</span> <span class="n">scores_probas</span><span class="p">)</span>
@@ -13563,7 +13561,7 @@ drwxr-xr-x 4 mathou mathou  4096 mars  16 14:37 val
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[97]:</div>
+    <div class="prompt output_prompt">Out[107]:</div>
 
 
 
@@ -13595,7 +13593,7 @@ drwxr-xr-x 4 mathou mathou  4096 mars  16 14:37 val
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[98]:</div>
+<div class="prompt input_prompt">In&nbsp;[108]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">cm</span> <span class="o">=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">test_Y</span><span class="p">,</span> <span class="n">scores_preds</span><span class="p">)</span>
@@ -13652,7 +13650,7 @@ drwxr-xr-x 4 mathou mathou  4096 mars  16 14:37 val
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[99]:</div>
+<div class="prompt input_prompt">In&nbsp;[109]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">pneumonia</span> <span class="o">=</span> <span class="n">scores_probas</span><span class="p">[</span><span class="n">scores_probas</span><span class="o">.</span><span class="n">round</span><span class="p">()</span><span class="o">==</span><span class="kc">True</span><span class="p">]</span>
@@ -13674,26 +13672,26 @@ drwxr-xr-x 4 mathou mathou  4096 mars  16 14:37 val
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[99]:</div>
+    <div class="prompt output_prompt">Out[109]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>{&#39;whiskers&#39;: [&lt;matplotlib.lines.Line2D at 0x7fb2716e4610&gt;,
-  &lt;matplotlib.lines.Line2D at 0x7fb2716e4450&gt;,
-  &lt;matplotlib.lines.Line2D at 0x7fb272261990&gt;,
-  &lt;matplotlib.lines.Line2D at 0x7fb23883d8d0&gt;],
- &#39;caps&#39;: [&lt;matplotlib.lines.Line2D at 0x7fb2716d6a90&gt;,
-  &lt;matplotlib.lines.Line2D at 0x7fb2716d6ed0&gt;,
-  &lt;matplotlib.lines.Line2D at 0x7fb272236590&gt;,
-  &lt;matplotlib.lines.Line2D at 0x7fb271f92890&gt;],
- &#39;boxes&#39;: [&lt;matplotlib.patches.PathPatch at 0x7fb2381b3990&gt;,
-  &lt;matplotlib.patches.PathPatch at 0x7fb271fa5210&gt;],
- &#39;medians&#39;: [&lt;matplotlib.lines.Line2D at 0x7fb2716d6ad0&gt;,
-  &lt;matplotlib.lines.Line2D at 0x7fb272007710&gt;],
- &#39;fliers&#39;: [&lt;matplotlib.lines.Line2D at 0x7fb271fa5490&gt;,
-  &lt;matplotlib.lines.Line2D at 0x7fb271f9a750&gt;],
+<pre>{&#39;whiskers&#39;: [&lt;matplotlib.lines.Line2D at 0x7fb270e96990&gt;,
+  &lt;matplotlib.lines.Line2D at 0x7fb270e96f10&gt;,
+  &lt;matplotlib.lines.Line2D at 0x7fb270e82cd0&gt;,
+  &lt;matplotlib.lines.Line2D at 0x7fb270eab290&gt;],
+ &#39;caps&#39;: [&lt;matplotlib.lines.Line2D at 0x7fb270e8a490&gt;,
+  &lt;matplotlib.lines.Line2D at 0x7fb270e8a9d0&gt;,
+  &lt;matplotlib.lines.Line2D at 0x7fb270eab7d0&gt;,
+  &lt;matplotlib.lines.Line2D at 0x7fb270eabcd0&gt;],
+ &#39;boxes&#39;: [&lt;matplotlib.patches.PathPatch at 0x7fb271e4ced0&gt;,
+  &lt;matplotlib.patches.PathPatch at 0x7fb270e82290&gt;],
+ &#39;medians&#39;: [&lt;matplotlib.lines.Line2D at 0x7fb270e8af10&gt;,
+  &lt;matplotlib.lines.Line2D at 0x7fb271d33250&gt;],
+ &#39;fliers&#39;: [&lt;matplotlib.lines.Line2D at 0x7fb270e824d0&gt;,
+  &lt;matplotlib.lines.Line2D at 0x7fb271d33790&gt;],
  &#39;means&#39;: []}</pre>
 </div>
 
