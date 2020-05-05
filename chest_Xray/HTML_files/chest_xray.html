@@ -13100,7 +13100,7 @@ div#notebook {
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>total 36
 drwxr-xr-x 5 mathou mathou  4096 mars  16 14:37 .
-drwxr-xr-x 6 mathou mathou  4096 avril 27 12:01 ..
+drwxr-xr-x 6 mathou mathou  4096 mai    5 11:14 ..
 -rw-r--r-- 1 mathou mathou 12292 mars  16 14:37 .DS_Store
 drwxr-xr-x 4 mathou mathou  4096 mars  16 14:37 test
 drwxr-xr-x 4 mathou mathou  4096 mars  16 14:37 train
@@ -13164,50 +13164,34 @@ drwxr-xr-x 4 mathou mathou  4096 mars  16 14:37 val
 <div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">train_X</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">train_Y</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">TRAIN_PATH</span><span class="p">):</span>
-    <span class="n">is_pneumonia</span> <span class="o">=</span> <span class="mf">0.</span>
-    <span class="k">if</span> <span class="n">elem</span> <span class="o">==</span> <span class="s2">&quot;PNEUMONIA&quot;</span><span class="p">:</span>
-        <span class="n">is_pneumonia</span> <span class="o">=</span> <span class="mf">1.</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">TRAIN_PATH</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">elem</span><span class="p">):</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="n">path</span> <span class="o">=</span> <span class="n">TRAIN_PATH</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">elem</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span>
-                <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="o">+</span><span class="n">filename</span><span class="p">))</span>
-                <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="p">(</span><span class="mi">224</span><span class="p">,</span><span class="mi">224</span><span class="p">))</span>
-                <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span><span class="o">/</span><span class="mf">255.</span>
-                <span class="n">train_X</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
-                <span class="n">train_Y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">is_pneumonia</span><span class="p">)</span>
-            <span class="k">except</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="n">filename</span> <span class="o">+</span> <span class="s2">&quot; failed&quot;</span><span class="p">)</span>
-                <span class="k">pass</span>
-    <span class="k">except</span><span class="p">:</span>
-        <span class="k">pass</span>
-<span class="n">train_X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">train_X</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">224</span><span class="o">*</span><span class="mi">224</span><span class="o">*</span><span class="mi">3</span><span class="p">)</span>
-<span class="n">train_Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">train_Y</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">create_dataset</span><span class="p">(</span><span class="n">PATH</span><span class="p">):</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">Y</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">PATH</span><span class="p">):</span>
+        <span class="n">is_pneumonia</span> <span class="o">=</span> <span class="mf">0.</span>
+        <span class="k">if</span> <span class="n">elem</span> <span class="o">==</span> <span class="s2">&quot;PNEUMONIA&quot;</span><span class="p">:</span>
+            <span class="n">is_pneumonia</span> <span class="o">=</span> <span class="mf">1.</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">PATH</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">elem</span><span class="p">):</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">path</span> <span class="o">=</span> <span class="n">PATH</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">elem</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span>
+                    <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="o">+</span><span class="n">filename</span><span class="p">))</span>
+                    <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="p">(</span><span class="mi">224</span><span class="p">,</span><span class="mi">224</span><span class="p">))</span>
+                    <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span><span class="o">/</span><span class="mf">255.</span>
+                    <span class="n">X</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+                    <span class="n">Y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">is_pneumonia</span><span class="p">)</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="n">filename</span> <span class="o">+</span> <span class="s2">&quot; failed&quot;</span><span class="p">)</span>
+                    <span class="k">pass</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">pass</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">X</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">224</span><span class="o">*</span><span class="mi">224</span><span class="o">*</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span>
+    
 </pre></div>
 
     </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>.DS_Store failed
-.DS_Store failed
-</pre>
-</div>
-</div>
-
 </div>
 </div>
 
@@ -13217,28 +13201,7 @@ drwxr-xr-x 4 mathou mathou  4096 mars  16 14:37 val
 <div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">val_X</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">val_Y</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">VAL_PATH</span><span class="p">):</span>
-    <span class="n">is_pneumonia</span> <span class="o">=</span> <span class="mf">0.</span>
-    <span class="k">if</span> <span class="n">elem</span> <span class="o">==</span> <span class="s2">&quot;PNEUMONIA&quot;</span><span class="p">:</span>
-        <span class="n">is_pneumonia</span> <span class="o">=</span> <span class="mf">1.</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">VAL_PATH</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">elem</span><span class="p">):</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="n">path</span> <span class="o">=</span> <span class="n">VAL_PATH</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">elem</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span>
-                <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="o">+</span><span class="n">filename</span><span class="p">))</span>
-                <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="p">(</span><span class="mi">224</span><span class="p">,</span><span class="mi">224</span><span class="p">))</span>
-                <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span><span class="o">/</span><span class="mf">255.</span>
-                <span class="n">val_X</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
-                <span class="n">val_Y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">is_pneumonia</span><span class="p">)</span>
-            <span class="k">except</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="n">filename</span> <span class="o">+</span> <span class="s2">&quot; failed&quot;</span><span class="p">)</span>
-                <span class="k">pass</span>
-    <span class="k">except</span><span class="p">:</span>
-        <span class="k">pass</span>
-<span class="n">val_X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">val_X</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">224</span><span class="o">*</span><span class="mi">224</span><span class="o">*</span><span class="mi">3</span><span class="p">)</span>
-<span class="n">val_Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">val_Y</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">train_X</span><span class="p">,</span> <span class="n">train_Y</span> <span class="o">=</span> <span class="n">create_dataset</span><span class="p">(</span><span class="n">TRAIN_PATH</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13270,28 +13233,39 @@ drwxr-xr-x 4 mathou mathou  4096 mars  16 14:37 val
 <div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_X</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">test_Y</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">VAL_PATH</span><span class="p">):</span>
-    <span class="n">is_pneumonia</span> <span class="o">=</span> <span class="mf">0.</span>
-    <span class="k">if</span> <span class="n">elem</span> <span class="o">==</span> <span class="s2">&quot;PNEUMONIA&quot;</span><span class="p">:</span>
-        <span class="n">is_pneumonia</span> <span class="o">=</span> <span class="mf">1.</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">TEST_PATH</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">elem</span><span class="p">):</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="n">path</span> <span class="o">=</span> <span class="n">TEST_PATH</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">elem</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span>
-                <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="o">+</span><span class="n">filename</span><span class="p">))</span>
-                <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="p">(</span><span class="mi">224</span><span class="p">,</span><span class="mi">224</span><span class="p">))</span>
-                <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span><span class="o">/</span><span class="mf">255.</span>
-                <span class="n">test_X</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
-                <span class="n">test_Y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">is_pneumonia</span><span class="p">)</span>
-            <span class="k">except</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="n">filename</span> <span class="o">+</span> <span class="s2">&quot; failed&quot;</span><span class="p">)</span>
-                <span class="k">pass</span>
-    <span class="k">except</span><span class="p">:</span>
-        <span class="k">pass</span>
-<span class="n">test_X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">test_X</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">224</span><span class="o">*</span><span class="mi">224</span><span class="o">*</span><span class="mi">3</span><span class="p">)</span>
-<span class="n">test_Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">test_Y</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">val_X</span><span class="p">,</span> <span class="n">val_Y</span> <span class="o">=</span> <span class="n">create_dataset</span><span class="p">(</span><span class="n">VAL_PATH</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>.DS_Store failed
+.DS_Store failed
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">test_X</span><span class="p">,</span> <span class="n">test_Y</span> <span class="o">=</span> <span class="n">create_dataset</span><span class="p">(</span><span class="n">TEST_PATH</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13308,7 +13282,7 @@ drwxr-xr-x 4 mathou mathou  4096 mars  16 14:37 val
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># PLOT POUMONS</span>
@@ -13337,13 +13311,13 @@ drwxr-xr-x 4 mathou mathou  4096 mars  16 14:37 val
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[7]:</div>
+    <div class="prompt output_prompt">Out[8]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f92e81c2550&gt;</pre>
+<pre>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f874f717450&gt;</pre>
 </div>
 
 </div>
@@ -13406,7 +13380,7 @@ drwxr-xr-x 4 mathou mathou  4096 mars  16 14:37 val
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">random_state</span> <span class="o">=</span> <span class="mi">20</span><span class="p">)</span>
@@ -13447,7 +13421,7 @@ drwxr-xr-x 4 mathou mathou  4096 mars  16 14:37 val
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">scores_preds</span> <span class="o">=</span> <span class="n">cross_val_predict</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">test_X</span><span class="p">,</span> <span class="n">test_Y</span><span class="p">)</span>
@@ -13487,7 +13461,7 @@ drwxr-xr-x 4 mathou mathou  4096 mars  16 14:37 val
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">accuracy</span> <span class="o">=</span> <span class="n">roc_auc_score</span><span class="p">(</span><span class="n">test_Y</span><span class="p">,</span> <span class="n">scores_preds</span><span class="p">)</span>
@@ -13526,7 +13500,7 @@ drwxr-xr-x 4 mathou mathou  4096 mars  16 14:37 val
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">false_positive</span><span class="p">,</span> <span class="n">true_positive</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">roc_curve</span><span class="p">(</span><span class="n">test_Y</span><span class="p">,</span> <span class="n">scores_probas</span><span class="p">)</span>
@@ -13549,7 +13523,7 @@ drwxr-xr-x 4 mathou mathou  4096 mars  16 14:37 val
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[11]:</div>
+    <div class="prompt output_prompt">Out[12]:</div>
 
 
 
@@ -13581,7 +13555,7 @@ drwxr-xr-x 4 mathou mathou  4096 mars  16 14:37 val
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">cm</span> <span class="o">=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">test_Y</span><span class="p">,</span> <span class="n">scores_preds</span><span class="p">)</span>
@@ -13638,7 +13612,7 @@ drwxr-xr-x 4 mathou mathou  4096 mars  16 14:37 val
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">pneumonia</span> <span class="o">=</span> <span class="n">scores_probas</span><span class="p">[</span><span class="n">scores_probas</span><span class="o">.</span><span class="n">round</span><span class="p">()</span><span class="o">==</span><span class="kc">True</span><span class="p">]</span>
@@ -13660,26 +13634,26 @@ drwxr-xr-x 4 mathou mathou  4096 mars  16 14:37 val
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[13]:</div>
+    <div class="prompt output_prompt">Out[14]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>{&#39;whiskers&#39;: [&lt;matplotlib.lines.Line2D at 0x7f927a5f6510&gt;,
-  &lt;matplotlib.lines.Line2D at 0x7f927a5f6a90&gt;,
-  &lt;matplotlib.lines.Line2D at 0x7f927a604890&gt;,
-  &lt;matplotlib.lines.Line2D at 0x7f927a604e10&gt;],
- &#39;caps&#39;: [&lt;matplotlib.lines.Line2D at 0x7f927a5f6fd0&gt;,
-  &lt;matplotlib.lines.Line2D at 0x7f927a5fd550&gt;,
-  &lt;matplotlib.lines.Line2D at 0x7f927a590390&gt;,
-  &lt;matplotlib.lines.Line2D at 0x7f927a590890&gt;],
- &#39;boxes&#39;: [&lt;matplotlib.patches.PathPatch at 0x7f927a5ea9d0&gt;,
-  &lt;matplotlib.patches.PathPatch at 0x7f927a604390&gt;],
- &#39;medians&#39;: [&lt;matplotlib.lines.Line2D at 0x7f927a5fda90&gt;,
-  &lt;matplotlib.lines.Line2D at 0x7f927a590dd0&gt;],
- &#39;fliers&#39;: [&lt;matplotlib.lines.Line2D at 0x7f927a604050&gt;,
-  &lt;matplotlib.lines.Line2D at 0x7f927a597350&gt;],
+<pre>{&#39;whiskers&#39;: [&lt;matplotlib.lines.Line2D at 0x7f874effe790&gt;,
+  &lt;matplotlib.lines.Line2D at 0x7f874effec90&gt;,
+  &lt;matplotlib.lines.Line2D at 0x7f874f00ca90&gt;,
+  &lt;matplotlib.lines.Line2D at 0x7f874ef94050&gt;],
+ &#39;caps&#39;: [&lt;matplotlib.lines.Line2D at 0x7f874f005210&gt;,
+  &lt;matplotlib.lines.Line2D at 0x7f874f005750&gt;,
+  &lt;matplotlib.lines.Line2D at 0x7f874ef94590&gt;,
+  &lt;matplotlib.lines.Line2D at 0x7f874ef94a90&gt;],
+ &#39;boxes&#39;: [&lt;matplotlib.patches.PathPatch at 0x7f874efedc90&gt;,
+  &lt;matplotlib.patches.PathPatch at 0x7f874f00c590&gt;],
+ &#39;medians&#39;: [&lt;matplotlib.lines.Line2D at 0x7f874f005c90&gt;,
+  &lt;matplotlib.lines.Line2D at 0x7f874ef94fd0&gt;],
+ &#39;fliers&#39;: [&lt;matplotlib.lines.Line2D at 0x7f874f00c250&gt;,
+  &lt;matplotlib.lines.Line2D at 0x7f874ef9d550&gt;],
  &#39;means&#39;: []}</pre>
 </div>
 
